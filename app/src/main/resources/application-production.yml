@@ -1,0 +1,8 @@
+# AWS課題の時に詳細を設定する予定
+spring:
+  hostname: localhost:8080
+  datasource:
+    url: jdbc:mysql://todoinstance.ctshgifyl7mr.ap-northeast-1.rds.amazonaws.com:3306/testdb
+    username: root
+    password: Yuuu451993
+    driverClassName: com.mysql.jdbc.Driver

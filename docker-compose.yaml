@@ -1,0 +1,48 @@
+version: '2'
+
+services:
+
+  app:
+    container_name: some-app
+    restart: always
+    build: ./app
+    working_dir: /app
+    volumes:
+      - ./app:/app
+      - maven-dependencies:/root/.m2
+    expose:
+      - "8080"
+    command: mvn clean spring-boot:run
+    depends_on:
+      - nginx
+      - mysql
+
+  nginx:
+    container_name: some-nginx
+    image: nginx:1.13
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+
+  mysql:
+    container_name: some-db
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: testdb
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql-data:/var/lib/mysql:cached
+      - ./mysql/conf:/etc/mysql/conf.d:cached
+    command: --innodb-use-native-aio=0
+
+volumes:
+  maven-dependencies:
+    driver: local
+  mysql-data:
+    driver: local
+  
